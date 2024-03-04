@@ -1,0 +1,8 @@
+{
+  "name": "kek",
+  "short_name": "kek",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000",
+  "description": "kek"
+}

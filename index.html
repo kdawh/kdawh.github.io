@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-109425833-2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+
+      gtag('config', 'UA-109425833-2');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, viewport-fit=cover"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-title" content="kek" />
+    <meta name="apple-mobile-web-app-title" content="kek" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#38424c" />
+
+    <title>nrhfggtuhgfjhssss</title>
+    <link rel="manifest" href="manifest.json" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+      rel="stylesheet"
+    />
+    <link rel="icon" sizes="192x192" href="homescreens/192.png" />
+    <link rel="icon" sizes="128x128" href="homescreens/128.png" />
+    <link rel="apple-touch-icon" sizes="128x128" href="homescreens/192.png" />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="192x192"
+      href="homescreens/192.png"
+    />
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
+
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <section id="header">
+      <p id="clock">10:30</p>
+    </section>
+    <section id="menuBar">
+      <div>
+        <p>My tickets</p>
+        <a href="#" onclick="toggleMenu()">
+          <img src="menuButton.png" alt="Menu" id="menuImage" />
+        </a>
+      </div>
+      <div>
+        <p>Active</p>
+        <p>Expired</p>
+      </div>
+    </section>
+    <section id="main">
+      <div class="paperBorder" style="top: -5px"></div>
+      <img src="share.png" id="share" />
+      <p id="validTo">Valid to 23/3 2018</p>
+      <p id="zone">Zone A</p>
+      <div id="flexBar">
+        <div id="progressBar"></div>
+        <p id="timer">1:30:10</p>
+      </div>
+      <div id="receipt">
+        <hr />
+        <p class="priceTag1">kr 37,00</p>
+        <p class="ticketType">1 Youth</p>
+        <hr />
+        <p class="priceTag2" style="font-weight: 600">kr 37,00</p>
+      </div>
+
+      <div id="info">
+        <p>12% VAT, kr 3,96</p>
+        <p>VAT base kr 34,94</p>
+        <p>Paid with credit card</p>
+        <p>Issued 4/4/2018, 0:37</p>
+      </div>
+      <img
+        src="logo.png"
+        alt="kekk"
+        style="margin: 0 0 2.3vh 0; height: 6.5vh"
+      />
+      <a href="#" onclick="toggleQR()" id="busButton">
+        <img src="circleGreen.png" alt="Bus" id="butButtonImage" />
+        <p>Single ticket</p>
+      </a>
+      <div class="paperBorder" style="bottom: -5px"></div>
+    </section>
+    <div id="menu">
+      <p style="text-align: center; color: #979797"><i id="versionTag"></i></p>
+      <br />
+      <hr style="margin: 0 -4vh" />
+      <h1 style="font-size: 6vh; margin: 1vh 0">Innstillinger</h1>
+      <input
+        type="checkbox"
+        id="inpHeader"
+        name="inpHeader"
+        style="float: right"
+      />
+      <label for="inpHeader" style="font-size: 3vh">iOS-Header</label>
+      <hr />
+      <input
+        type="checkbox"
+        id="inpNattbillett"
+        name="inpNattbillett"
+        style="float: right"
+      />
+      <label for="inpNattbillett" style="font-size: 3vh">Nattbillett</label>
+      <hr />
+      <button class="menuButton" onclick="newTime(0.96)">Ny tid</button>
+      <button class="menuButton" onclick="newTime(0.2)">Tilfeldig tid</button>
+      <button class="menuButton" onclick="resetData()">
+        Reset LocalStorage
+      </button>
+      <p>
+        <i
+          >Reset LocalStorage kan løse problemer dersom nettsiden har blitt
+          nylig oppdatert.</i
+        >
+      </p>
+      <div style="display: flex; flex-direction: row">
+        <table style="flex: 2">
+          <thead>
+            <tr>
+              <th colspan="4">Typer</th>
+            </tr>
+          </thead>
+          <tbody id="menuTyper"></tbody>
+        </table>
+        <table style="flex: 1">
+          <thead>
+            <tr>
+              <th colspan="2">Sone</th>
+            </tr>
+          </thead>
+          <tbody id="menuSoner"></tbody>
+        </table>
+      </div>
+    </div>
+    <a id="qrSection" onclick="toggleQR()">
+      <h2 id="qrTextField">Q5XRKQ<br />562</h2>
+      <div id="qrdiv"></div>
+      <p>TAP TO CLOSE</p>
+    </a>
+    <script>
+      let clock = document.getElementById('clock');
+      let validTo = document.getElementById('validTo');
+      let zone = document.getElementById('zone');
+      let timer = document.getElementById('timer');
+      let progressBar = document.getElementById('progressBar');
+      //let ticketType = document.getElementById("ticketType");
+      let info = document.getElementById('info');
+      let menu = document.getElementById('menu');
+      let inpHeader = document.getElementById('inpHeader');
+      let header = document.getElementById('header');
+      let menuSoner = document.getElementById('menuSoner');
+      let menuTyper = document.getElementById('menuTyper');
+      let menuBar = document.getElementById('menuBar');
+      let receipt = document.getElementById('receipt');
+      let main = document.getElementById('main');
+      let inpNattbillett = document.getElementById('inpNattbillett');
+      let versionTag = document.getElementById('versionTag');
+
+      let qrSection = document.getElementById('qrSection');
+      let qrdiv = document.getElementById('qrdiv');
+      let qrTextField = document.getElementById('qrTextField');
+
+      let qrcode;
+
+      dataDefault = {
+        appVersion: '1.3.4',
+        typer: [
+          { name: 'adult', price: 46, count: 1 },
+          { name: 'child', price: 23, count: 0 },
+          { name: 'bicycle', price: 23, count: 0 },
+          { name: 'senior', price: 23, count: 0 },
+          { name: 'military', price: 23, count: 0 },
+          { name: 'youth', price: 46, count: 0 },
+          { name: 'student', price: 46, count: 0 },
+        ],
+        soner: [
+          { name: 'A', toggled: true },
+          { name: 'B1', toggled: false },
+          { name: 'B2', toggled: false },
+          { name: 'B3', toggled: false },
+          { name: 'C1', toggled: false },
+          { name: 'C2', toggled: false },
+          { name: 'C3', toggled: false },
+          { name: 'C4', toggled: false },
+          { name: 'C5', toggled: false },
+          { name: 'C6', toggled: false },
+          { name: 'D', toggled: false },
+          { name: 'E1', toggled: false },
+          { name: 'E2', toggled: false },
+        ],
+        typerSelected: [],
+        sonerSelected: [],
+
+        iosHeader: false,
+        menuToggled: false,
+        nattbillett: false,
+
+        priceMultiplier: 0,
+        priceTag: 0,
+        vat: 0,
+        vatBase: 0,
+        vatRate: 0.12,
+
+        timeRemaining: 0,
+        timeNow: null,
+        timeIssued: null,
+        timeValid: null,
+      };
+      let data = {};
+      let qrToggled = false;
+
+      function newTime(minTime) {
+        data.timeRemaining =
+          (Math.random() * (1 - minTime) + minTime) * 5400 * 1000;
+        data.timeNow = new Date(Date.now());
+        data.timeIssued = new Date(
+          data.timeNow.getTime() - 5400 * 1000 + data.timeRemaining
+        );
+        data.timeValid = new Date(data.timeNow.getTime() + data.timeRemaining);
+        saveData();
+        generateTicketData();
+      }
+
+      function toggleMenu() {
+        data.menuToggled = !data.menuToggled;
+        if (data.menuToggled) {
+          menu.style.visibility = 'visible';
+          menu.style.opacity = 1;
+          menu.style.zIndex = 10;
+          main.style.zIndex = 0;
+          inpHeader.checked = data.iosHeader;
+          inpNattbillett.checked = data.nattbillett;
+        } else {
+          menu.style.visibility = 'hidden';
+          menu.style.opacity = 0;
+          menu.style.zIndex = 0;
+          main.style.zIndex = 10;
+          data.iosHeader = inpHeader.checked;
+          data.nattbillett = inpNattbillett.checked;
+          firstScreen();
+        }
+        saveData();
+      }
+
+      function generateMenu() {
+        menuSoner.innerHTML = '';
+        for (let i = 0; i < data.soner.length; i++) {
+          menuSoner.innerHTML += `
+                <tr>
+                    <td><input type="checkbox" id="${
+                      data.soner[i].name
+                    }" onclick="toggleSone(${i})" ${
+            data.soner[i].toggled ? 'checked' : ''
+          }></td>
+                    <td><label for="${data.soner[i].name}">${
+            data.soner[i].name
+          }</label></td>
+                </tr>
+            `;
+        }
+        menuTyper.innerHTML = '';
+        for (let i = 0; i < data.typer.length; i++) {
+          let type = data.typer[i];
+          menuTyper.innerHTML += `
+                <tr>
+                    <td>${type.name}</td>
+                    <td><button onclick="changeType(${i},-1)">-</button></td>
+                    <th>${type.count}</th>
+                    <td><button onclick="changeType(${i},1)"">+</button></td>
+                </tr>
+                `;
+        }
+        versionTag.innerText = 'Version ' + data.appVersion;
+      }
+
+      function toggleSone(index) {
+        if (data.sonerSelected.length > 1 || !data.soner[index].toggled) {
+          data.soner[index].toggled = !data.soner[index].toggled;
+        }
+        updateSelected();
+        generateMenu();
+      }
+
+      function changeType(index, amount) {
+        let antallValgt = 0;
+        data.typer.forEach(function (e) {
+          antallValgt += e.count;
+        });
+        if (amount > 0 || antallValgt > 1) {
+          data.typer[index].count += amount;
+        }
+        data.typer[index].count =
+          data.typer[index].count <= 0 ? 0 : data.typer[index].count;
+
+        updateSelected();
+        generateMenu();
+      }
+
+      function updateSelected() {
+        inpNattbillett.checked = data.nattbillett;
+        data.typerSelected = [];
+        if (data.nattbillett) {
+          data.typerSelected = [{ name: 'Nattbillett', price: 100, count: 1 }];
+        } else {
+          data.typer.forEach(function (e) {
+            if (e.count >= 1) {
+              data.typerSelected.push(e);
+            }
+          });
+        }
+        data.sonerSelected = [];
+        for (let sone of data.soner) {
+          if (sone.toggled) {
+            data.sonerSelected.push(sone.name);
+          }
+        }
+      }
+
+      function firstScreen() {
+        //Priser
+        data.priceTag = 0;
+        updateSelected();
+        data.typerSelected.forEach(function (e) {
+          data.priceTag += e.count * e.price;
+        });
+        data.priceMultiplier =
+          data.sonerSelected.length > 5 ? 5 : data.sonerSelected.length;
+        data.priceTag *= data.priceMultiplier;
+        data.vat = '4,93';
+        data.vatBase = '41,07';
+
+        //iOS header
+        if (data.iosHeader) {
+          clock.style.visibility = 'visible';
+          clock.style.opacity = '1';
+          header.style.backgroundImage = "url('header.png')";
+          menuBar.style.top = '2.9vh';
+          main.style.top = '10.2vh';
+          menu.style.top = '8.5vh';
+          menu.style.height = '91.5vh';
+        } else {
+          clock.style.visibility = 'hidden';
+          clock.style.opacity = '0';
+          header.style.backgroundImage = 'none';
+          menuBar.style.top = '0';
+          main.style.top = '10.2vh';
+          menu.style.top = '5.6vh';
+          menu.style.height = '94.4vh';
+        }
+
+        //Valid to
+        validTo.innerText =
+          'Valid to ' +
+          (data.timeValid.getHours() < 10 ? '0' : '') +
+          data.timeValid.getHours() +
+          ':' +
+          (data.timeValid.getMinutes() < 10 ? '0' : '') +
+          data.timeValid.getMinutes();
+        zone.innerHTML = 'Zone ' + data.sonerSelected;
+
+        //Receipt
+        receipt.innerHTML = '';
+        for (type of data.typerSelected) {
+          let nameString =
+            type.name.charAt(0).toUpperCase() + type.name.slice(1);
+          receipt.innerHTML += `
+                <hr>
+                <p class="priceTag1">kr ${
+                  type.price * type.count * data.priceMultiplier
+                },00</p>
+                <p class="ticketType">${type.count} ${nameString}</p>
+            `;
+        }
+        receipt.innerHTML += `
+            <hr>
+            <p class="priceTag2" style="font-weight: 600">kr ${data.priceTag},00</p>
+        `;
+
+        //Info
+        timeIssuedString =
+          (data.timeIssued.getDate() < 10 ? '0' : '') +
+          data.timeIssued.getDate() +
+          '/' +
+          (data.timeIssued.getMonth() + 1 < 10 ? '0' : '') +
+          (data.timeIssued.getMonth() + 1) +
+          '/' +
+          data.timeIssued.getFullYear() +
+          ', ' +
+          (data.timeIssued.getHours() < 10 ? '0' : '') +
+          data.timeIssued.getHours() +
+          ':' +
+          (data.timeIssued.getMinutes() < 10 ? '0' : '') +
+          data.timeIssued.getMinutes();
+        info.innerHTML = `
+                <p>12% VAT, kr ${data.vat}</p>
+                <p>VAT base kr ${data.vatBase}</p>
+                <p>Paid with credit card</p>
+                <p>Issued ${timeIssuedString}</p>
+            `;
+      }
+
+      function updateScreen() {
+        //Clock
+        clock.innerText =
+          (data.timeNow.getHours() < 10 ? '0' : '') +
+          data.timeNow.getHours() +
+          ':' +
+          (data.timeNow.getMinutes() < 10 ? '0' : '') +
+          data.timeNow.getMinutes();
+
+        //Progress Bar
+        let tr = new Date(data.timeRemaining - 3600 * 1000);
+        timer.innerText =
+          (tr.getHours() < 10 ? '0' : '') +
+          tr.getHours() +
+          ':' +
+          (tr.getMinutes() < 10 ? '0' : '') +
+          tr.getMinutes() +
+          ':' +
+          (tr.getSeconds() < 10 ? '0' : '') +
+          tr.getSeconds();
+        let progressRatio = data.timeRemaining / (5400 * 1000); //Mellom 0 og 1
+        progressBar.style.width = progressRatio * 69 + 1 + 'vw';
+      }
+
+      //Ticket data generation
+
+      function makeString(length, possible) {
+        let s = '';
+
+        for (let i = 0; i < length; i++)
+          s += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return s;
+      }
+
+      function generateTicketData() {
+        let d1 = makeString(3, '123456789');
+        let d2 = makeString(6, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+        let fullcode = d2 + ';';
+        fullcode +=
+          (data.timeIssued.getDate() < 10 ? '0' : '') +
+          data.timeIssued.getDate() +
+          '/' +
+          (data.timeIssued.getMonth() + 1 < 10 ? '0' : '') +
+          (data.timeIssued.getMonth() + 1) +
+          '/' +
+          data.timeIssued.getFullYear() +
+          '\n' +
+          (data.timeIssued.getHours() < 10 ? '0' : '') +
+          data.timeIssued.getHours() +
+          ':' +
+          (data.timeIssued.getMinutes() < 10 ? '0' : '') +
+          data.timeIssued.getMinutes();
+        fullcode += ';' + '4793' + makeString(6, '0123456789') + ';';
+        fullcode +=
+          (data.timeValid.getDate() < 10 ? '0' : '') +
+          data.timeValid.getDate() +
+          '-' +
+          (data.timeValid.getMonth() + 1 < 10 ? '0' : '') +
+          (data.timeValid.getMonth() + 1) +
+          '-' +
+          data.timeValid.getFullYear() +
+          '\n' +
+          (data.timeValid.getHours() < 10 ? '0' : '') +
+          data.timeValid.getHours() +
+          ':' +
+          (data.timeValid.getMinutes() < 10 ? '0' : '') +
+          data.timeValid.getMinutes() +
+          ':' +
+          (data.timeValid.getSeconds() < 10 ? '0' : '') +
+          data.timeValid.getSeconds();
+        fullcode += ';' + makeString(64, '0123456789abcdef');
+
+        qrTextField.innerHTML = d2 + '<br><br>' + d1;
+        qrdiv.innerHTML = '';
+        qrcode = new QRCode(qrdiv, {
+          text: fullcode,
+          width: window.innerWidth / 2,
+          height: window.innerWidth / 2,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+      }
+
+      function toggleQR() {
+        qrToggled = !qrToggled;
+        if (qrToggled) {
+          qrSection.style.visibility = 'visible';
+          qrSection.style.opacity = 1;
+        } else {
+          qrSection.style.visibility = 'hidden';
+          qrSection.style.opacity = 0;
+        }
+      }
+
+      //Data management
+      function resetData() {
+        //let menuState = data.menuToggled;
+        data = JSON.parse(JSON.stringify(dataDefault));
+        localStorage.setItem('atb_eula', JSON.stringify(false));
+        data.menuToggled = false;
+        newTime(0.5);
+        saveData();
+        updateSelected();
+        generateMenu();
+        firstScreen();
+        updateScreen();
+        generateTicketData();
+        location.reload();
+      }
+
+      function loadData() {
+        let ticketData = JSON.parse(localStorage.getItem('ticketData'));
+        if (
+          ticketData !== null &&
+          ticketData.appVersion === dataDefault.appVersion
+        ) {
+          data = ticketData;
+          data.timeNow = new Date(Date.now());
+          data.timeValid = new Date(Date.parse(data.timeValid));
+          data.timeIssued = new Date(Date.parse(data.timeIssued));
+          data.timeRemaining =
+            Date.parse(data.timeValid) - Date.parse(data.timeNow);
+          if (data.menuToggled) {
+            data.menuToggled = false;
+            toggleMenu();
+          }
+        } else {
+          resetData();
+        }
+
+        if (data.timeValid < data.timeNow) {
+          newTime(0.94);
+        }
+      }
+
+      function saveData() {
+        localStorage.setItem('ticketData', JSON.stringify(data));
+      }
+
+      function checkEula() {
+        console.log(localStorage.getItem('atb_eula'));
+        let eula = JSON.parse(localStorage.getItem('atb_eula'));
+        if (eula !== true) {
+          document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
+          main.innerHTML = `
+                <article style="
+                        display: block;
+                        width: 100vw;
+                        height: 100vh;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        margin:0;
+                        padding: 1em;
+                        background-color: white;
+                        box-sizing: border-box;
+                        overflow-y: scroll;
+                    ">
+                    <h1>Ansvarsfraskrivelse og betingelser for bruk</h1>
+                    <p><b>Denne nettsiden er ikke en bussbillett!</b> Dokumentforfalskning er straffbart, og du er som bruker ansvarlig for å ikke misbruke eller forveksle denne nettsiden med ekte billetter.</p>
+                    <br>
+                    <p>Nettsiden er kun designet for å være en kosmetisk etterlikning. Ingen penger har blitt investert i utviklingen av denne nettsiden, og nettsiden har heller ingen fortjeneste.</p>
+                    <br>
+                    <p>All kildekode kan hentes på:</p>
+                    <a href="https://github.com/byggmesterfake/atb">https://github.com/byggmesterfake/atb</a>
+
+                    <br>
+                    <br>
+                    <i>Har du lest og forstått all informasjonen over?</i>
+                    <input type="text" id="inp_eula1" placeholder="Ja / Nei"
+                        style="
+                            display: block;
+                            padding: 0.3em;
+                            border: solid lightgray 2px;
+                            font-size: 1.1em;
+                        ">
+                    <br>
+                    <i>Tar du som bruker ansvar for ikke forsøke å benytte denne nettsiden som billettbevis?</i>
+                    <input type="text" id="inp_eula2" placeholder="Ja / Nei"
+                        style="
+                            display: block;
+                            padding: 0.3em;
+                            border: solid lightgray 2px;
+                            font-size: 1.1em;
+                        ">
+                    <br>
+                    <button onclick="setEula()"
+                        style="
+                            display: block;
+                            padding: 0.3em;
+                            border: solid lightgray 2px;
+                            font-size: 1.1em;
+                        ">OK
+                    </button>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </article>
+            `;
+        } else {
+          loadData();
+          updateSelected();
+          generateMenu();
+          firstScreen();
+          updateScreen();
+          generateTicketData();
+          let loop = setInterval(function () {
+            updateScreen();
+            data.timeRemaining -= 1000;
+            if (data.timeRemaining <= 0) {
+              newTime(0.5);
+            }
+            setTimeout(loop, 1000);
+          }, 1000);
+        }
+      }
+
+      function setEula() {
+        let eula =
+          document.getElementById('inp_eula1').value.toLowerCase() === 'ja' &&
+          document.getElementById('inp_eula2').value.toLowerCase() === 'ja';
+
+        localStorage.setItem('atb_eula', JSON.stringify(eula));
+        location.reload();
+      }
+      checkEula();
+    </script>
+  </body>
+</html>
